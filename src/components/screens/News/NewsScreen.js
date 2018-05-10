@@ -7,27 +7,16 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { CachedImage } from 'react-native-cached-image';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import HeaderMenu from '../main/HeaderMenu';
 
 const styles = require('../../styles/NewsStyle');
-
-const MenuButton = props => (
-  <TouchableOpacity
-    onPress={() => {
-      props.navigation.navigate('DrawerOpen');
-    }}
-  >
-    <FontAwesome name="bars" size={30} style={{ marginLeft: 10 }} />
-  </TouchableOpacity>
-);
 
 export default class NewsScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'News',
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerStyle: { backgroundColor: '#00CC33' },
+    header: (
+      <HeaderMenu navigation={navigation} title='News' screen='Screen_News' />
+    )
   });
 
   constructor(props) {
@@ -47,7 +36,7 @@ export default class NewsScreen extends Component {
     this.setState({
       isLoading: true,
     });
-    fetch(`http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/Controllers/getNews.php?page=${ 
+    fetch(`http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/Controllers/getNews.php?page=${ 
         this.state.page}`,
       {
         method: 'GET',
@@ -114,7 +103,7 @@ export default class NewsScreen extends Component {
                   <CachedImage
                     style={styles.imgThumbnail}
                     source={{
-                      uri: `http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/${ 
+                      uri: `http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/${ 
                         item.imgPost}`,
                     }}
                   />

@@ -121,41 +121,6 @@ module.exports = StyleSheet.create({
     width: width - 150,
     marginLeft: 75
   },
-  iconSocial: {
-    width: width - 150,
-    flexDirection: 'row',
-    marginLeft: 75,
-    flex: 1,
-    marginBottom: 20
-  },
-  iconFacebook: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#0000CC',
-    paddingTop: 10
-  },
-  iconFacebookIOS: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#0000CC',
-    paddingTop: 10
-  },
-  iconGoogle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#FF3333',
-    paddingTop: 10
-  },
-  iconGoogleIOS: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#FF3333',
-    paddingTop: 10
-  },
   forgotPassword: {
     color: '#fff',
     fontSize: 18,

@@ -1,27 +1,16 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, FlatList, AsyncStorage } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import { CachedImage } from 'react-native-cached-image';
+import HeaderMenu from '../main/HeaderMenu';
 
 const styles = require('../../styles/TeamsStyle');
-
-const MenuButton = props =>
-  <TouchableOpacity
-    onPress={() => {
-      props.navigation.navigate('DrawerOpen');
-    }}
-  >
-    <FontAwesome name="bars" size={30} style={{ marginLeft: 10 }} />
-  </TouchableOpacity> 
-;
 
 export default class TeamsScreen extends Component {
   
   static navigationOptions = ({ navigation }) => ({
-    title: 'Teams',
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerStyle: { backgroundColor: '#00CC33' }
+    header: (
+      <HeaderMenu navigation={navigation} title='Teams' />
+    )
   });
 
   constructor(props) {
@@ -34,6 +23,11 @@ export default class TeamsScreen extends Component {
   }
 
   componentDidMount = () => {
+    this.getTeams();
+  }
+
+  getTeams() {
+    console.log('get teams');
     this.setState({
       isLoading: true
     });
@@ -51,14 +45,19 @@ export default class TeamsScreen extends Component {
       <View style={container}>
       <FlatList 
         data={this.state.data}
-        keyExtractor={item => item}
+        // keyExtractor={item => item}
         renderItem={({ item, index }) => (
           <TouchableOpacity 
             key={index} 
             style={teams} 
             onPress={
               () => this.props.navigation.navigate('Screen_SingleTeam', 
-              { id: item.id, logo: item.logo, nameTeam: item.name })
+              { 
+                id: item.id, 
+                logo: item.logo, 
+                nameTeam: item.name
+              }
+            )
             }
           >
             <View style={logo}>

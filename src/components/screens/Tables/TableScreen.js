@@ -9,28 +9,17 @@ import {
   AsyncStorage 
 } 
 from 'react-native';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
 import { CachedImage } from 'react-native-cached-image';
+import HeaderMenu from '../main/HeaderMenu';
 
 const styles = require('../../styles/TableStyle');
-
-const MenuButton = props =>
-  <TouchableOpacity
-    onPress={() => {
-      props.navigation.navigate('DrawerOpen');
-    }}
-  >
-    <FontAwesome name="bars" size={30} style={{ marginLeft: 10 }} />
-  </TouchableOpacity>;
 
 export default class TableScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'Tables',
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerStyle: { backgroundColor: '#00CC33' }
+    header: (
+      <HeaderMenu navigation={navigation} title='Tables' />
+    )
   });
 
   constructor(props) {
@@ -38,7 +27,6 @@ export default class TableScreen extends Component {
     this.state = {
       key: 'Brief',
       data: '',
-      idLeague: '',
       isLoading: false
     };
   }

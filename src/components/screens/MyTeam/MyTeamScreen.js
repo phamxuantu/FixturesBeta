@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, ActivityIndicator, AsyncStorage } from 'react-native';
-
 import { Calendar } from 'react-native-calendars';
-
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Picker from 'react-native-picker';
 import { CachedImage } from 'react-native-cached-image';
+import HeaderMenu from '../main/HeaderMenu';
 
 const styles = require('../../styles/MyTeamStyle');
-
-const MenuButton = props =>
-  <TouchableOpacity
-    onPress={() => {
-      props.navigation.navigate('DrawerOpen');
-    }}
-  >
-    <FontAwesome name="bars" size={30} style={{ marginLeft: 10 }} />
-  </TouchableOpacity>;
 
 export default class MyTeamScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'My Team',
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerStyle: { backgroundColor: '#00CC33' }
+    header: (
+      <HeaderMenu navigation={navigation} title='My Team' />
+    )
   });
 
   constructor(props) {
@@ -35,6 +24,7 @@ export default class MyTeamScreen extends Component {
       data: '',
       selected: this.getCurrentTime(),
       dates: [],
+      time: [],
       arrnNameTeam: [],
       arrIdTeam: [],
       nameTeam: '',
@@ -46,7 +36,15 @@ export default class MyTeamScreen extends Component {
   
 
   componentDidMount = () => {
-    this.getTeam(this.state.idLeague);
+    AsyncStorage.getItem('idLeague', (err, result) => {
+      if (result !== null) {
+          this.setState({
+              idLeague: result
+          }, () => this.getTeam());
+      } else {
+        this.getTeam();
+      }
+    });
   }
 
   onDayPress(day) {
@@ -102,7 +100,7 @@ export default class MyTeamScreen extends Component {
         AsyncStorage.setItem('myTeam', idTeam);
         this.filterDate();
       } else {
-        fetch('http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/Controllers/getFixturesById.php', {
+        fetch('http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/Controllers/getFixturesById.php', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -117,6 +115,7 @@ export default class MyTeamScreen extends Component {
         .then((responseJson) => {
           AsyncStorage.setItem(`myTeam${idTeam}`, JSON.stringify(responseJson));
           AsyncStorage.setItem('myTeam', idTeam);
+          AsyncStorage.setItem('idLeagueMyTeam', this.state.idLeague);
           this.setState({
             data: responseJson,
             isLoading: false
@@ -280,6 +279,14 @@ export default class MyTeamScreen extends Component {
     return datesMarked;
   }
 
+  cutHour(time) {
+    return time.split(':')[0];
+  }
+
+  cutMinute(time) {
+    return time.split(':')[1];
+  }
+
   picker() {
     const data = this.state.arrnNameTeam;
     // console.log(data[2]);
@@ -297,6 +304,14 @@ export default class MyTeamScreen extends Component {
             this.setState({
               posSelected: pickedIndex
             });
+            // for (let i = 0; i < this.state.time.length; i++) {
+            //   let dateMatch = new Date(this.state.dates[i]);
+            //   dateMatch.setHours(parseInt(this.cutHour(this.state.time[i]), 0));
+            //   dateMatch.setMinutes(parseInt(this.cutMinute(this.state.time[i]), 0));
+            //   let dateNoti = new Date(this.state.dates[i]);
+            //   dateNoti.setHours(6);
+            //   if()
+            // }
         }
     });
     Picker.show();
@@ -305,17 +320,20 @@ export default class MyTeamScreen extends Component {
   filterDate() {
     const dataFixtures = this.state.data;
     // console.log('checkData', dataFixtures);
-    const arr = [];
+    const arrDate = [];
+    const arrTime = [];
     if (dataFixtures !== '') {
       // console.log('checkData', dataFixtures.fixtures);
       const fixtures = dataFixtures.fixtures;
       for (let i = 0; i < fixtures.length; i++) {
-        arr.push(fixtures[i].date);
+        arrDate.push(fixtures[i].date);
+        arrTime.push(fixtures[i].time);
       }
     }
     // console.log('date', arr);
     this.setState({
-      dates: arr
+      dates: arrDate,
+      time: arrTime
     });
   }
 

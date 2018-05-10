@@ -5,7 +5,9 @@ import {
     FlatList, 
     ActivityIndicator,
     TouchableOpacity, 
-    Platform } 
+    Platform,
+    AsyncStorage
+ } 
 from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -17,45 +19,45 @@ const styles = require('../../styles/SingleTeamStyle');
 export default class SingleNewsScreen extends Component {
 
     static navigationOptions = ({ navigation }) => ({
-            header: (
-                <View 
-                    style={{ 
-                        backgroundColor: '#00CC33',
-                        flexDirection: 'row', 
-                        alignItems: 'center',
-                        paddingLeft: 10,
-                        height: Platform.OS === 'ios' ? 65 : 50,
-                        paddingTop: Platform.OS === 'ios' ? 15 : 0 
+        header: (
+            <View 
+                style={{ 
+                    backgroundColor: '#00CC33',
+                    flexDirection: 'row', 
+                    alignItems: 'center',
+                    paddingLeft: 10,
+                    height: Platform.OS === 'ios' ? 65 : 50,
+                    paddingTop: Platform.OS === 'ios' ? 15 : 0 
+                }}
+            >
+                <TouchableOpacity 
+                    onPress={() => { navigation.goBack(); }} 
+                    style={{
+                        marginRight: 20
                     }}
                 >
-                    <TouchableOpacity 
-                        onPress={() => navigation.goBack()} 
-                        style={{
-                            marginRight: 20
-                        }}
-                    >
-                        <FontAwesome name='arrow-left' size={20} />
-                    </TouchableOpacity>
-                    <CachedImage 
-                        resizeMode='center' 
-                        source={{ uri: navigation.state.params.logo }} 
-                        style={{
-                            width: 30,
-                            height: 30,
-                            marginRight: 10
-                        }}
-                    />
-                    <Text 
-                        style={{
-                            color: '#fff',
-                            fontSize: 18
-                        }}
-                    >
-                        {navigation.state.params.nameTeam}
-                    </Text>
-                </View>
-            )
-        });
+                    <FontAwesome name='arrow-left' size={20} />
+                </TouchableOpacity>
+                <CachedImage 
+                    resizeMode='center' 
+                    source={{ uri: navigation.state.params.logo }} 
+                    style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 10
+                    }}
+                />
+                <Text 
+                    style={{
+                        color: '#fff',
+                        fontSize: 18
+                    }}
+                >
+                    {navigation.state.params.nameTeam}
+                </Text>
+            </View>
+        )
+    });
 
     constructor(props) {
         super(props);
@@ -66,10 +68,23 @@ export default class SingleNewsScreen extends Component {
         };
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
+        AsyncStorage.getItem('idLeague', (err, result) => {
+            if (result !== null) {
+                this.setState({
+                    idLeague: result
+                }, () => this.getData());
+            } else {
+                this.getData();
+            }
+        });
+    }
+
+    getData() {
         this.setState({ isLoadding: true });
         console.log('idTeam', this.props.navigation.state.params.id);
-        fetch('http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/Controllers/getTeamById.php', {
+        console.log('idLeague', this.state.idLeague);
+        fetch('http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/Controllers/getTeamById.php', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

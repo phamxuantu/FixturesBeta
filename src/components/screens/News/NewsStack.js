@@ -2,6 +2,7 @@ import { StackNavigator } from 'react-navigation';
 
 import NewsScreen from './NewsScreen';
 import SingleNewsScreen from './SingleNewsScreen';
+import SettingScreen from '../main/SettingScreen';
 
 const NewsStack = StackNavigator(
   {
@@ -10,6 +11,9 @@ const NewsStack = StackNavigator(
     },
     Screen_SingleNews: {
       screen: SingleNewsScreen
+    },
+    Screen_Setting: {
+      screen: SettingScreen
     }
   }
 );

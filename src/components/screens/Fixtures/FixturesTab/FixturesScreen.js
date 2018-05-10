@@ -8,30 +8,19 @@ import {
   Dimensions,
   AsyncStorage
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { CachedImage } from 'react-native-cached-image';
+import HeaderMenu from '../../main/HeaderMenu';
 
-const styles = require('../../styles/FixturesStyle');
+const styles = require('../../../styles/FixturesStyle');
 
 const { height, width } = Dimensions.get('window');
-
-
-const MenuButton = props =>
-  <TouchableOpacity
-    onPress={() => {
-      props.navigation.navigate('DrawerOpen');
-    }}
-  >
-    <FontAwesome name="bars" size={30} style={{ marginLeft: 10 }} />
-  </TouchableOpacity>;
-
 
 export default class FixturesScreen extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-    title: 'Fixtures',
-    headerLeft: <MenuButton navigation={navigation} />,
-    headerStyle: { backgroundColor: '#00CC33' }
+    header: (
+      <HeaderMenu navigation={navigation} title='Fixtures' screen='Screen_Fixtures' />
+    )
   });
 
   constructor(props) {

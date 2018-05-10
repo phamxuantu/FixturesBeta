@@ -19,7 +19,7 @@ export default class SingleNewsScreen extends Component {
   }
 
   componentDidMount = () => {
-    fetch('http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/Controllers/getNewsById.php', {
+    fetch('http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/Controllers/getNewsById.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -43,7 +43,7 @@ export default class SingleNewsScreen extends Component {
         <ScrollView>
           <View style={styles.header}>
             <View style={styles.thumbnail}>
-            <Image style={styles.imgThumbnail} source={{ uri: `http://demo.tntechs.com.vn/xuantu/demo/Fixtures-Test/${this.state.data.imgPost}` }} />
+            <Image style={styles.imgThumbnail} source={{ uri: `http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/${this.state.data.imgPost}` }} />
             </View>
 
             <View style={styles.title}>

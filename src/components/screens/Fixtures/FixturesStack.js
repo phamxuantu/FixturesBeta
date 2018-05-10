@@ -1,10 +1,14 @@
 import { StackNavigator } from 'react-navigation';
 
-import FixturesScreen from './FixturesScreen';
+import SettingScreen from '../main/SettingScreen';
+import FixturesTab from './FixturesTab/FixturesTab';
 
 const FixturesStack = StackNavigator({
-  Screen_Fixtures: {
-    screen: FixturesScreen
+  Tab_Fixtures: {
+    screen: FixturesTab
+  },
+  Screen_Setting: {
+    screen: SettingScreen
   }
 });
 export default FixturesStack;

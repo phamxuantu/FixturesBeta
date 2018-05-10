@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image, Dimensions, Alert } from 'react-native';
+import { 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    Image, 
+    Dimensions,
+    AsyncStorage
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const styles = require('../../styles/MenuStyle');
@@ -19,7 +26,19 @@ export default class Menu extends Component {
         this.setState({
             activeMenu: name
         });
-        navigation.navigate(name);
+        if (name === 'Account') {
+            AsyncStorage.getItem('userInfo', (err, result) => {
+                if ((result == null) || (result === '')) {
+                    navigation.navigate('Screen_Login');
+                } else {
+                    navigation.navigate('Screen_InfoUser', {
+                        dataUser: result
+                    });
+                }
+            });
+        } else {
+            navigation.navigate(name);
+        }
     }
 
     render() {
@@ -188,18 +207,18 @@ export default class Menu extends Component {
                     </View>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity 
+                <TouchableOpacity 
                         style={
-                            [menuItem, this.state.activeMenu === "Account" ? 
+                            [menuItem, this.state.activeMenu === 'Account' ? 
                             menuItemActive : 
                             null]
                         } 
-                        onPress={() => this.clickItemMenu("Account")}
-                    >
+                        onPress={() => this.clickItemMenu('Account')}
+                >
                     <View style={{ width: width / 7 }}>
                         <FontAwesome 
                             style={
-                                [textMenuItemIcon, activeMenu === "Account" ? 
+                                [textMenuItemIcon, activeMenu === 'Account' ? 
                                 textMenuItemActiveIcon : 
                                 null]
                             } 
@@ -209,7 +228,7 @@ export default class Menu extends Component {
                     <View style={{ width: (6 * width) / 7 }}>
                         <Text
                             style={
-                                [textMenuItem, activeMenu === "Account" ? 
+                                [textMenuItem, activeMenu === 'Account' ? 
                                 textMenuItemActive : 
                                 null]
                             }
@@ -217,9 +236,9 @@ export default class Menu extends Component {
                             Account
                         </Text>
                     </View>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
 
-                <TouchableOpacity 
+                {/* <TouchableOpacity 
                     style={
                         [menuItem, this.state.activeMenu === 'Account' ? 
                         menuItemActive : 
@@ -248,7 +267,7 @@ export default class Menu extends Component {
                             Account
                         </Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         );
     }
