@@ -93,13 +93,15 @@ export default class MyTeamScreen extends Component {
     });
     AsyncStorage.getItem(`myTeam${idTeam}`, (err, result) => {
       if (result !== null) {
+        // console.log('check data myteam khac null', JSON.parse(result));
         this.setState({
-          data: JSON.parse(result),
-          isLoading: false
+          data: JSON.parse(result)
+        }, () => {
+          AsyncStorage.setItem('myTeam', idTeam);
+          this.filterDate();
         });
-        AsyncStorage.setItem('myTeam', idTeam);
-        this.filterDate();
       } else {
+        // console.log('check data myteam null');
         fetch('http://103.28.38.10/~tngame/xuantu/demo/Fixtures-Test/Controllers/getFixturesById.php', {
           method: 'POST',
           headers: {
@@ -202,8 +204,11 @@ export default class MyTeamScreen extends Component {
     for (let position = 0; position < this.state.dates.length; position++) {
       if (this.state.selected === this.state.dates[position]) {
         const dataFixtures = this.state.data;
+        // console.log('check show fixtures', dataFixtures);
         if (dataFixtures !== '') {
           const fixtures = dataFixtures.fixtures;
+          // console.log('check show fixtures position', position);
+          // console.log('check show fixtures', fixtures[position]);
           return (
             <View style={styles.fixtures}>
               <Text style={styles.date}>
@@ -279,14 +284,6 @@ export default class MyTeamScreen extends Component {
     return datesMarked;
   }
 
-  cutHour(time) {
-    return time.split(':')[0];
-  }
-
-  cutMinute(time) {
-    return time.split(':')[1];
-  }
-
   picker() {
     const data = this.state.arrnNameTeam;
     // console.log(data[2]);
@@ -300,18 +297,11 @@ export default class MyTeamScreen extends Component {
         pickerCancelBtnText: 'Cancel',
         pickerFontSize: 22,
         onPickerConfirm: (pickedValue, pickedIndex) => {
-            this.getFixtures(this.state.arrIdTeam[pickedIndex]);
-            this.setState({
-              posSelected: pickedIndex
-            });
-            // for (let i = 0; i < this.state.time.length; i++) {
-            //   let dateMatch = new Date(this.state.dates[i]);
-            //   dateMatch.setHours(parseInt(this.cutHour(this.state.time[i]), 0));
-            //   dateMatch.setMinutes(parseInt(this.cutMinute(this.state.time[i]), 0));
-            //   let dateNoti = new Date(this.state.dates[i]);
-            //   dateNoti.setHours(6);
-            //   if()
-            // }
+          // console.log('check id team selected', this.state.arrIdTeam[pickedIndex]);
+          this.getFixtures(this.state.arrIdTeam[pickedIndex]);
+          this.setState({
+            posSelected: pickedIndex
+          });
         }
     });
     Picker.show();
@@ -333,7 +323,8 @@ export default class MyTeamScreen extends Component {
     // console.log('date', arr);
     this.setState({
       dates: arrDate,
-      time: arrTime
+      time: arrTime,
+      isLoading: false
     });
   }
 

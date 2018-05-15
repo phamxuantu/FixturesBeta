@@ -47,6 +47,7 @@ export default class App extends Component {
         date.setHours(6);
         // const date = new Date(Date.now() + (60 * 1000));
         PushNotification.localNotificationSchedule({
+          foreground: true,
           message: '10 matches will be played today!!!',
           date,
           repeatType: 'day'
